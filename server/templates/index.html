@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card hero">
+  <h1>Smart Home</h1>
+  <p>Středoškolský projekt chytré domácnosti s Flaskem, SQLite a virtuálními ESP zařízeními.</p>
+  <div class="inline-form">
+    <a class="button-link" href="{{ url_for('hardware') }}">Hardware</a>
+    <a class="button-link" href="{{ url_for('flowchart') }}">Flowchart</a>
+    {% if session.get("user_id") %}
+      <a class="button-link" href="{{ url_for('devices') }}">Devices</a>
+      <a class="button-link" href="{{ url_for('monitor') }}">Monitor</a>
+    {% endif %}
+  </div>
+</div>
+
+{% if user %}
+  <div class="card">
+    <p>Přihlášen: <b>{{ user["username"] }}</b></p>
+    <p>Vybraná domácnost: <b>{{ home_id if home_id else "žádná" }}</b></p>
+  </div>
+
+  <div class="card">
+    <h3>Tvoje domácnosti</h3>
+    {% if homes %}
+      <ul class="nice-list">
+      {% for h in homes %}
+        <li>🏠 ID {{ h["id"] }} – {{ h["name"] }} (role: {{ h["role"] }})</li>
+      {% endfor %}
+      </ul>
+    {% else %}
+      <p>Zatím nejsi v žádné domácnosti.</p>
+    {% endif %}
+  </div>
+{% else %}
+  <div class="card">
+    <p>Přihlas se nebo se zaregistruj, aby šel projekt používat.</p>
+  </div>
+{% endif %}
+{% endblock %}

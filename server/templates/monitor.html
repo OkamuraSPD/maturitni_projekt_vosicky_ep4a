@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <h2>Monitor</h2>
+  <div class="inline-form">
+    <div><label>Room filtr</label><input id="filterRoom" placeholder="kitchen"></div>
+    <div><label>Device filtr</label><input id="filterDevice" placeholder="esp0"></div>
+    <div><label>Signal filtr</label><select id="filterSignal"><option value="">(vše)</option><option value="digital">digital</option><option value="analog">analog</option></select></div>
+    <div><button id="refreshBtn">Refresh</button></div>
+  </div>
+</div>
+
+<div id="monitorRoot" class="monitor-grid"></div>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-inner">
+    <div class="modal-head">
+      <h3 id="modalTitle">Graf</h3>
+      <button id="closeModalBtn">X</button>
+    </div>
+    <div class="chart-toolbar">
+      <button class="hbtn" data-h="1m">1 min</button>
+      <button class="hbtn" data-h="10m">10 min</button>
+      <button class="hbtn" data-h="1d">1 den</button>
+    </div>
+    <canvas id="chartCanvas" height="120"></canvas>
+    <p class="muted">Pro delší horizonty se zobrazují agregované průměry.</p>
+  </div>
+</div>
+{% endblock %}

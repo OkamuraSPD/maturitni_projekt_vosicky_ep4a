@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <h2>Hardware přehled</h2>
+  <p>Tady jsou tři běžné varianty ESP32, které se dají v projektu použít.</p>
+</div>
+
+<div class="hw-grid">
+  {% for board in boards %}
+    <div class="card hw-card">
+      <img src="{{ board.image }}" alt="{{ board.name }}" class="hw-image">
+      <h3>{{ board.name }}</h3>
+      <ul class="nice-list">
+        <li><b>CPU:</b> {{ board.cpu }}</li>
+        <li><b>Wi‑Fi:</b> {{ board.wifi }}</li>
+        <li><b>Bluetooth:</b> {{ board.bt }}</li>
+        <li><b>GPIO:</b> {{ board.gpio }}</li>
+        <li><b>ADC:</b> {{ board.adc }}</li>
+      </ul>
+      <p class="muted">{{ board.note }}</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

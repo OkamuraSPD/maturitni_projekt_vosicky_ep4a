@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <h2>Vývojový diagram aplikace</h2>
+  <p>Jednoduchý přehled hlavního toku aplikace.</p>
+</div>
+<div class="card">
+  <img src="{{ url_for('static', filename='flowchart.png') }}" alt="Vývojový diagram" class="flow-image">
+</div>
+{% endblock %}

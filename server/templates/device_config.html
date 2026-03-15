@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <h2>Konfigurace zařízení: {{ dev_id }}</h2>
+  <p>Status: <b class="{{ 'ok' if online else 'bad' }}">{{ "ONLINE" if online else "OFFLINE" }}</b></p>
+  <p>Room: <b>{{ dev.get("room","") }}</b> | IP: <b>{{ dev.get("ip","") }}</b> | Board: <b>{{ dev.get("board","") }}</b></p>
+  <p>Tvoje role: <b>{{ role }}</b></p>
+</div>
+
+<div class="card">
+  <h3>Piny</h3>
+  <table>
+    <tr><th>Pin</th><th>Mode</th><th>Signal</th><th>Peripheral</th><th>Value</th><th>Desired</th><th>Akce</th></tr>
+    {% for pin, p in dev.get("pins", {}).items() %}
+      <tr>
+        <td>{{ pin }}</td>
+        <td>{{ p.mode }}</td>
+        <td>{{ p.signal }}</td>
+        <td>{{ p.peripheral_id or "-" }}</td>
+        <td>{{ p.value }}</td>
+        <td>{{ p.desired }}</td>
+        <td>
+          {% if role in ["admin","elder"] %}
+            <form method="post" action="{{ url_for('device_pins_update', dev_id=dev_id) }}" class="inline">
+              <input type="hidden" name="action" value="remove">
+              <input type="hidden" name="pin" value="{{ pin }}">
+              <button>Remove</button>
+            </form>
+            {% if p.mode == "output" %}
+              <form method="post" action="{{ url_for('set_output_pin', dev_id=dev_id, pin=pin) }}" class="inline">
+                <input name="value" placeholder="0/1 nebo 0..4095" style="width:140px">
+                <button>Set</button>
+              </form>
+            {% endif %}
+          {% else %}
+            —
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% if role in ["admin","elder"] %}
+<div class="card">
+  <h3>Přidat pin</h3>
+  <form method="post" action="{{ url_for('device_pins_update', dev_id=dev_id) }}">
+    <input type="hidden" name="action" value="add">
+    <label>Pin</label><input name="pin" required>
+    <label>Mode</label>
+    <select name="mode" id="modeSel"><option value="input">input</option><option value="output">output</option></select>
+    <label>Signal</label>
+    <select name="signal" id="signalSel"><option value="digital">digital</option><option value="analog">analog</option></select>
+    <label>Peripheral</label>
+    <select name="peripheral_id" id="peripheralSel"></select>
+    <button>Add</button>
+  </form>
+</div>
+<script>
+const PERIPHERALS = {{ peripherals|tojson }};
+function fillPeripherals(){
+  const mode = document.getElementById("modeSel").value;
+  const signal = document.getElementById("signalSel").value;
+  const list = (PERIPHERALS?.[signal]?.[mode]) || [];
+  const sel = document.getElementById("peripheralSel");
+  sel.innerHTML = "";
+  const o0 = document.createElement("option");
+  o0.value = "";
+  o0.textContent = "(bez periférie)";
+  sel.appendChild(o0);
+  for(const p of list){
+    const o = document.createElement("option");
+    o.value = p.id;
+    o.textContent = `${p.icon || ""} ${p.label}`;
+    sel.appendChild(o);
+  }
+}
+document.getElementById("modeSel").addEventListener("change", fillPeripherals);
+document.getElementById("signalSel").addEventListener("change", fillPeripherals);
+fillPeripherals();
+</script>
+{% endif %}
+{% endblock %}

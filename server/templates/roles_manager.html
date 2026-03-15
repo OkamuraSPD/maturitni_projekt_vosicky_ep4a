@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="card">
+  <h2>Roles manager (Home ID {{ home_id }})</h2>
+  <p class="muted">Pouze admin. Počet adminů: <b>{{ admins }}</b>, členů: <b>{{ members_count }}</b></p>
+</div>
+
+<div class="card">
+  <table>
+    <tr><th>User</th><th>Role</th><th>Změnit roli</th><th>Kick</th></tr>
+    {% for m in members %}
+      <tr>
+        <td>{{ m["username"] }} (id {{ m["user_id"] }}) {% if m["user_id"]==me %}<b>(ty)</b>{% endif %}</td>
+        <td><b>{{ m["role"] }}</b></td>
+        <td>
+          <form method="post" action="{{ url_for('roles_manager_set_role') }}" class="inline">
+            <input type="hidden" name="user_id" value="{{ m['user_id'] }}">
+            <select name="role">
+              <option value="member" {% if m["role"]=="member" %}selected{% endif %}>member</option>
+              <option value="elder" {% if m["role"]=="elder" %}selected{% endif %}>elder</option>
+              <option value="admin" {% if m["role"]=="admin" %}selected{% endif %}>admin</option>
+            </select>
+            <button>Set</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="{{ url_for('roles_manager_kick') }}" class="inline">
+            <input type="hidden" name="user_id" value="{{ m['user_id'] }}">
+            <button>Kick</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="card">
+  <h3>Smazání domácnosti</h3>
+  <p class="muted">Domácnost jde smazat jen když jsi v ní sám jako jediný admin i jediný člen.</p>
+  <form method="post" action="{{ url_for('home_delete') }}">
+    <button>Delete whole home</button>
+  </form>
+</div>
+{% endblock %}

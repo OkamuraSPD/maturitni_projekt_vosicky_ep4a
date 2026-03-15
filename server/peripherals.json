@@ -1,0 +1,79 @@
+{
+  "analog": {
+    "input": [
+      {
+        "id": "temperature",
+        "label": "Teplota",
+        "icon": "🌡️"
+      },
+      {
+        "id": "light_level",
+        "label": "Osvětlení",
+        "icon": "💡"
+      },
+      {
+        "id": "humidity",
+        "label": "Vlhkost",
+        "icon": "💧"
+      },
+      {
+        "id": "noise",
+        "label": "Hluk",
+        "icon": "🔊"
+      },
+      {
+        "id": "analog_value",
+        "label": "Analog hodnota",
+        "icon": "📈"
+      }
+    ],
+    "output": [
+      {
+        "id": "sound_gen",
+        "label": "Generování zvuku",
+        "icon": "🎵"
+      },
+      {
+        "id": "dimming",
+        "label": "Stmívání",
+        "icon": "💡"
+      },
+      {
+        "id": "temp_control",
+        "label": "Řízení teploty",
+        "icon": "🌡️"
+      }
+    ]
+  },
+  "digital": {
+    "input": [
+      {
+        "id": "flood_sensor",
+        "label": "Povodňový senzor",
+        "icon": "🌊"
+      },
+      {
+        "id": "doorbell",
+        "label": "Zvonek",
+        "icon": "🔔"
+      }
+    ],
+    "output": [
+      {
+        "id": "light_switch",
+        "label": "Světlo",
+        "icon": "💡"
+      },
+      {
+        "id": "door_close",
+        "label": "Zavření dveří/oken",
+        "icon": "🚪"
+      },
+      {
+        "id": "door_open",
+        "label": "Otevření dveří/oken",
+        "icon": "🚪"
+      }
+    ]
+  }
+}

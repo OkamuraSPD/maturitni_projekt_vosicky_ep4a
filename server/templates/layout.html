@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <title>Smart Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script defer src="{{ url_for('static', filename='chart.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+<nav class="nav">
+  <div class="brand">🏠 Smart Home</div>
+  <div class="nav-links">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('hardware') }}">Hardware</a>
+    <a href="{{ url_for('flowchart') }}">Flowchart</a>
+    {% if session.get("user_id") %}
+      <a href="{{ url_for('devices') }}">Devices</a>
+      <a href="{{ url_for('monitor') }}">Monitor</a>
+      {% if session.get("home_id") %}
+        <a href="{{ url_for('roles_manager') }}">Roles</a>
+      {% endif %}
+      <a href="{{ url_for('register_home') }}">Create home</a>
+      <a href="{{ url_for('login_home') }}">Join/select home</a>
+      <a href="{{ url_for('logout') }}">Logout</a>
+    {% else %}
+      <a href="{{ url_for('register_user') }}">Register</a>
+      <a href="{{ url_for('login_user') }}">Login</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main class="container">
+  {% if error %}
+    <div class="alert">{{ error }}</div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>
